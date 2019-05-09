@@ -3,7 +3,7 @@ from getkeys import key_check
 from directkeys import PressKey, ReleaseKey, W,S,A,D
 import random
 import time
-import cv2
+from PIL import Image
 import utils
 import numpy as np
 if __name__ == "__main__":  
@@ -29,8 +29,8 @@ if __name__ == "__main__":
         keys_t = key_check("WSADY")
         if "Y" in keys_t:
             break
-        image = cv2.resize(image,(640,360))
-        cv2.imwrite('output.png',image)
+        image = Image.resize(image,(640,360))
+        image.save('output.png')
         keys = [0,0]
         if 'W' in keys_t:
             keys[0]=0

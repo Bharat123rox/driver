@@ -1,6 +1,6 @@
 # Done by Frannecklp
 
-import cv2
+from PIL import Image, convert
 import numpy as np
 import win32gui, win32ui, win32con, win32api
 
@@ -39,4 +39,4 @@ def grab_screen(window_title=None,region=None):
     win32gui.DeleteObject(bmp.GetHandle())
 
     #return img
-    return cv2.cvtColor(cv2.cvtColor(img, cv2.COLOR_BGRA2RGB), cv2.COLOR_BGR2RGB)
+    return img.convert('RGB')
