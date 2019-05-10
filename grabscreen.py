@@ -1,6 +1,7 @@
 # Done by Frannecklp
 
 from PIL import Image, convert
+
 import numpy as np
 import win32gui, win32ui, win32con, win32api
 
@@ -30,13 +31,15 @@ def grab_screen(window_title=None,region=None):
     memdc.BitBlt((0, 0), (width, height), srcdc, (left, top), win32con.SRCCOPY)
     #bmp.SaveBitmapFile(memdc, 'screenshot.bmp')
     signedIntsArray = bmp.GetBitmapBits(True)
+    # IMP: dtype has to be 'uint8' or lower for PIL to handle images properly
     img = np.fromstring(signedIntsArray, dtype='uint8')
-    img.shape = (height,width,4)
+    assert img.shape == (height, width, 4)
 
     srcdc.DeleteDC()
     memdc.DeleteDC()
     win32gui.ReleaseDC(hwin, hwindc)
     win32gui.DeleteObject(bmp.GetHandle())
 
-    #return img
-    return img.convert('RGB')
+    # return the RGB image (BGRA -> RGB)
+    # The more elegant np.flip() doesn't work
+    return img[:, :, (2, 1, 0)]
